@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import User from './components/User';
 import FollowerList from './components/FollowerList';
 //import Follower from './components/Follower';
@@ -6,28 +7,57 @@ import FollowerList from './components/FollowerList';
 class App extends React.Component {
   state = {
     currentUser: "malloryshea",
-    user: {
-      avatar_url: "https://avatars.githubusercontent.com/u/91549290?v=4",
-      html_url: "https://github.com/malloryshea",
-      name: "Mallory Shea",
-      login: "malloryshea",
-      public_repos: 37,
-      followers: 0,
-    },
-    followers:[
-      {
-        login: "nyamekyeannor",
-        avatar_url: "https://avatars.githubusercontent.com/u/64448617?v=4",
-        html_url: "https://github.com/nyamekyeannor",
-      }
-    ]
+    user: {},
+    followers:[]
   }
 
+  componentDidMount () {
+    axios.get(`https://api.github.com/users/${this.state.currentUser}`
+  )
+    .then(resp=> {
+      this.setState({
+        ...this.state,
+        user: resp.data
+      });
+    })
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if(this.state.user !== prevState.user) {
+      axios.get(`https://api.github.com/users/${this.state.currentUser}/following`)
+      .then(resp=> {
+         this.setState({
+         ...this.state,
+         followers: resp.data
+        });
+      })
+    }
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      ...this.state,
+      currentUser:e.target.value
+    });
+  }
+
+  handleSubmit = (e)=>{
+    e.preventDefault();
+    axios.get(`https://api.github.com/users/${this.state.currentUser}`
+    )
+      .then(resp=> {
+        this.setState({
+          ...this.state,
+          user: resp.data
+        });
+      })
+  }
+  
   render() {
     return(<div>
       <h1>Github Card</h1>
-      <form>
-        <input placeholder="Github Handle"/>
+      <form onSubmit ={this.handleSubmit}>
+        <input placeholder="Github Handle" onChange={this.handleChange}/>
         <button>Search</button>
       </form>
 
