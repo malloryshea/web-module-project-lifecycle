@@ -1,8 +1,28 @@
 import React from 'react';
-//import './App.css'
-
+import User from './components/User';
+import FollowerList from './components/FollowerList';
+//import Follower from './components/Follower';
 
 class App extends React.Component {
+  state = {
+    currentUser: "malloryshea",
+    user: {
+      avatar_url: "https://avatars.githubusercontent.com/u/91549290?v=4",
+      html_url: "https://github.com/malloryshea",
+      name: "Mallory Shea",
+      login: "malloryshea",
+      public_repos: 37,
+      followers: 0,
+    },
+    followers:[
+      {
+        login: "nyamekyeannor",
+        avatar_url: "https://avatars.githubusercontent.com/u/64448617?v=4",
+        html_url: "https://github.com/nyamekyeannor",
+      }
+    ]
+  }
+
   render() {
     return(<div>
       <h1>Github Card</h1>
@@ -11,33 +31,8 @@ class App extends React.Component {
         <button>Search</button>
       </form>
 
-      <div id="userCard">
-        <img src="https://avatars.githubusercontent.com/u/91549290?v=4"/>
-        <a target="_blank" href="https://github.com/malloryshea"><h3>Mallory Shea</h3></a>
-        <p>(malloryshea)</p>
-        <p>Total Repos: 37</p>
-        <p>Total Followers: 0</p>
-      </div>
-
-      <div id="followers">
-        <div className="follower">
-          <img width="200px" src="https://avatars.githubusercontent.com/u/64448617?v=4"/>
-          <a target="_blank" href="https://github.com/nyamekyeannor"><p>Nyamekye Annor</p></a>
-        </div>
-        <div className="follower">
-          <img width="200px" src="https://avatars.githubusercontent.com/u/74324320?v=4"/>
-          <a target="_blank" href="https://github.com/morgankj"><p>Morgan Jones</p></a>
-        </div>
-        <div className="follower">
-          <img width="200px" src="https://avatars.githubusercontent.com/u/89111438?v=4"/>
-          <a target="_blank" href="https://github.com/AdeShennaike"><p>Adekunle Shennaike</p></a>
-        </div>
-        <div className="follower">
-          <img width="200px" src="https://avatars.githubusercontent.com/u/91203600?v=4"/>
-          <a target="_blank" href="https://github.com/leahball"><p>
-          Leah Ball</p></a>
-        </div>
-      </div>
+      <User user={this.state.user}/>
+      <FollowerList followers={this.state.followers}/>
 
     </div>);
   }
